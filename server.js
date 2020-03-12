@@ -31,13 +31,8 @@ app.listen(process.env.PORT || 3000);
 /* 
  * Steps to create a new project
 
- -Install nodeman npm i --dev-save nodemon
- -Change name in package/package-lock.json
  -Create database with Atlas Clusters (choose driver when prompted)
  -Allow access from anywhere (IP whitelist) *Optional*
- -Create .env file
  -Connect to correct database in .env file
- -Link computer with GitHub https://www.youtube.com/watch?v=HfTXHrWMGVY (new machines only)
- -Create a new GitHub repository/Heroku project https://www.youtube.com/watch?v=qj2oDkvc4dQ
  -Configure congif-vars in heroku correctly, Settings->Config Vars (should mirror what you have in .env)
 */
