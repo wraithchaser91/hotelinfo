@@ -4,10 +4,9 @@ if(process.env.NODE_ENV !== "production"){
 
 const cors = require('cors');
 const express = require('express');
-let app = express();
+const app = express();
 app.use(cors());
 app.options('*', cors());
-const app = express();
 const expressLayouts = require("express-ejs-layouts");
 
 app.set("view engine", "ejs");
