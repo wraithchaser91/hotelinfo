@@ -1,0 +1,31 @@
+<h1>Languages Spoken</h1>
+<div id="mainContainer">
+    <h4>Choose a city to find out the languages spoken there</h4>
+    <%- include("../partials/citySelect") %>
+    <h2 class="infoString">Choose a City</h2>
+</div>
+
+<script>
+    let citySelect = document.getElementById("citySelect");
+    citySelect.addEventListener("change", ()=>getInfo());
+    let infoString = document.getElementsByClassName("infoString")[0];
+    getInfo = () =>{
+        let req = new XMLHttpRequest();
+        req.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                let data = JSON.parse(req.responseText).list;   
+                let string = "";
+                for(let i = 0; i < data.length; i++){
+                    string+=data[i];
+                    if(i < data.length-1)string+=", ";
+                }
+                infoString.textContent = string;
+            }else if(this.readyState == 4)addErrorText(`ERROR: Cant find languages: ${this.status}`);
+        };
+        req.open("GET", `/language/${citySelect.value}`, true);
+        req.send();
+    }
+
+    getInfo();
+
+</script>

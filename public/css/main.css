@@ -1,0 +1,167 @@
+*, ::before, ::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --mainColour: #0042FF;
+    --secondaryColour: #00FFB2;
+}
+
+body{
+    background-color: #232323;
+    color:#e1e1e1;
+    font-family: 'Lato', sans-serif;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+}
+
+h1,h2,h3,h4,h5{
+    font-weight: lighter;
+}
+
+h1{
+    margin:5vh 0 2vh;
+    font-size: 2.2em;
+}
+
+h4{
+    font-size: 0.8em;
+    margin-bottom:1vh;
+}
+
+.infoString{
+    margin: 2vh 0;
+}
+
+#mainContainer{
+    width: 80vw;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.buttonA, form button, button{
+    border:none;
+    background-color: var(--mainColour);
+    color: white;
+    padding:0.7vh 0.7vw;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+
+}
+
+.buttonA:hover, form button:hover, button:hover{
+    color: var(--secondaryColour);
+}
+
+.otherButtonA{
+    border:none;
+    background-color: var(--mainColour);
+    color: white;
+    padding:0.5vh 0.6vw;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    filter:hue-rotate(40deg);
+    font-size: 0.8em;
+}
+
+.otherButtonA:hover{
+    color:var(--secondaryColour);
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom:2vh;
+    min-width: 10vw;
+}
+
+label{
+    margin-bottom:0.3vh;
+}
+
+input,select{
+    margin-bottom:1.5vh;
+    text-align: center;
+    border-radius: 5px;
+    padding:0.3vh 0;
+}
+
+form input, form select{
+    width: 100%;
+}
+
+.error{
+    color:#f84;
+    font-size: 0.8em;
+    margin-top:1vh;
+}
+
+#navigation{
+    position: fixed;
+    justify-content: flex-end;
+    padding: 1vh 1vw 0;
+}
+
+#navigation .navButton{
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 0 0.5vw;
+}
+
+#navigation .navButton:hover{
+    color: var(--secondaryColour);
+}
+
+.choice{
+    margin: 1vh 0.5vw;
+    background-color: #0001;
+    border-radius: 8px;
+    padding:1vh 2vw;
+    text-align: center;
+}
+
+.choice h3{
+    margin-bottom: 0.3vh;
+}
+
+.apiString{
+    font-size: 1em;
+    margin-bottom: 0.3vh;
+    cursor: default;
+}
+
+.apiString:hover{
+    color:var(--secondaryColour);
+}

@@ -1,0 +1,18 @@
+<h1>City Model Creator</h1>
+<div id="mainContainer">
+    <a href="/city/new" id="newCityButton" class="buttonA">Create new city model</a>
+
+    <div id="currentModels" class="flex-column">
+        <h2>City List</h2>
+        <% if(typeof cities != "undefined"){ %>
+            <div class="flex-row" id="modelRow">
+                <% cities.forEach(item=> { %>
+                    <div class="flex-column choice">
+                        <h3><%= item.name %></h3>
+                        <a href="<%= `city/update/${item.id}` %>" class="otherButtonA">Update</a>
+                    </div>
+                <%})%>   
+            </div> 
+        <%}%>
+    </div>
+</div>

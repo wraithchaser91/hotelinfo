@@ -23,16 +23,18 @@ db.on("error", error=>console.log(error));
 db.on("open", ()=>console.log("Connected to mongoose"));
 
 const indexRouter = require("./routes/index");
+const apiRouter = require("./routes/api");
+const cityRouter = require("./routes/city");
+const weatherRouter = require("./routes/weather");
+const languageRouter = require("./routes/language");
+const timezoneRouter = require("./routes/timezone");
+const exchangeRouter = require("./routes/exchange");
 app.use("/", indexRouter);
+app.use("/api", apiRouter);
+app.use("/city", cityRouter);
+app.use("/weather", weatherRouter);
+app.use("/language",languageRouter);
+app.use("/timezone",timezoneRouter);
+app.use("/exchange", exchangeRouter);
 
 app.listen(process.env.PORT || 3000);
-
-
-/* 
- * Steps to create a new project
-
- -Create database with Atlas Clusters (choose driver when prompted)
- -Allow access from anywhere (IP whitelist) *Optional*
- -Connect to correct database in .env file
- -Configure congif-vars in heroku correctly, Settings->Config Vars (should mirror what you have in .env)
-*/

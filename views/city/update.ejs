@@ -1,0 +1,21 @@
+<h1>Updating Model</h1>
+<div id="mainContainer">
+    <form action="<%= `/city/update/${city.id}` %>" method="POST">
+        <label for="country">Country Name</label>
+        <input type="text" required name="country" value="<%= city.country %>" id="country">
+        <label for="city">City Name</label>
+        <input type="text" required name="city" value="<%= city.name %>" id="city">
+        <label for="currency">Currency Code</label>
+        <input type="text" required name="currencyCode" value="<%= city.currencyCode %>" id="currencyCode">
+        <label for="languages">Language List</label>
+        <input type="text" required name="languageList" value="<%= city.languages %>" id="languageList">
+        <label for="timeZone">Time Zone (UTC)</label>
+        <input type="number" required name="timeZone" value="<%= city.timeZone %>" id="timeZone" min=-12 max=12 value=0>
+        <label for="lat">Latitude</label>
+        <input type="number" required name="lat" value="<%= city.lat %>" id="lat" step="any">
+        <label for="lon">Longitude</label>
+        <input type="number" required name="lon" value="<%= city.lon %>" id="lon" step="any">
+        <button type="submit">Update</button>
+    </form>
+    <a href="/city" class="otherButtonA">Back</a>
+</div>

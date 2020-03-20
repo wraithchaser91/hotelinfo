@@ -1,0 +1,25 @@
+<h1>Local Time</h1>
+<div id="mainContainer">
+    <h4>Choose a city to find out the local time</h4>
+    <%- include("../partials/citySelect") %>
+    <h2 class="infoString">Choose a City</h2>
+</div>
+
+<script>
+    let citySelect = document.getElementById("citySelect");
+    citySelect.addEventListener("change", ()=>getInfo());
+    let infoString = document.getElementsByClassName("infoString")[0];
+    getInfo = () =>{
+        let req = new XMLHttpRequest();
+        req.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                infoString.textContent = JSON.parse(req.responseText).time;
+            }else if(this.readyState == 4)addErrorText(`ERROR: Cant find any timezones: ${this.status}`);
+        };
+        req.open("GET", `/timezone/${citySelect.value}`, true);
+        req.send();
+    }
+
+    getInfo();
+
+</script>

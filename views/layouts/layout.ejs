@@ -4,9 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="/img/qMark.png">
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <% if(typeof css != "undefined"){ %>
+        <% if(typeof css == "string") {%>
+            <link rel="stylesheet" type="text/css" href=<%= `/css/${css}.css` %>>
+        <%}else{%>
+            <% css.forEach(item => {%>
+                <link rel="stylesheet" type="text/css" href=<%= `/css/${item}.css` %>>
+            <%})%>
+        <%}%>
+    <%}%>
     <title>Document</title>
 </head>
 <body>
+    <script src="/js/utils.js"></script>
+    <%- include("../partials/navigation") %>
     <%- body %>
+    <script src="/js/postUtils.js"></script>
 </body>
 </html>

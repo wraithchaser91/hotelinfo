@@ -1,0 +1,1 @@
+errorLog = e => console.log(`ERROR: ${e}`);

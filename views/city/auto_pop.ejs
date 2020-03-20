@@ -1,0 +1,102 @@
+<h1>Auto Populating Model</h1>
+<div id="mainContainer">
+    <form action="/city/save-city" method="POST">
+        <label for="country">Country Name</label>
+        <input type="text" required name="country" value="<%= city.country %>" id="country">
+        <label for="city">City Name</label>
+        <input type="text" required name="city" value="<%= city.name %>" id="city">
+        <label for="currency">Currency Code</label>
+        <input type="text" required name="currencyCode" id="currencyCode">
+        <label for="languages">Language List</label>
+        <input type="text" required name="languageList" id="languageList">
+        <label for="timeZone">Time Zone (UTC)</label>
+        <input type="number" required name="timeZone" id="timeZone" min=-12 max=12 value=0>
+        <label for="lat">Latitude</label>
+        <input type="number" required name="lat" id="lat" step="any">
+        <label for="lon">Longitude</label>
+        <input type="number" required name="lon" id="lon" step="any">
+        <button type="submit">Save</button>
+    </form>
+    <a href="/city/new" class="otherButtonA">Back</a>
+    <h4 class="error"></h4>
+</div>
+
+<script>
+    let country = document.getElementById("country").value;
+    let city = document.getElementById("city").value;
+    let errorEle = document.getElementsByClassName("error")[0];
+    let countryReq = new XMLHttpRequest();
+    countryReq.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            let data = JSON.parse(countryReq.responseText);
+            findCountry(data);
+        }else if(this.readyState == 4)addErrorText(`ERROR: Cant find country values: ${this.status}`);
+    };
+    countryReq.open("GET", `https://restcountries.eu/rest/v2/all`, true);
+    countryReq.send();
+    
+    let latlonReq = new XMLHttpRequest();
+    latlonReq.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            let data = JSON.parse(latlonReq.responseText);
+            console.log(data);
+            findLatLon(data);
+        }else if(this.readyState == 4)addErrorText(`ERROR: Cant find city LatLon: ${this.status}`);
+    };
+    latlonReq.open("GET", `https://us1.locationiq.com/v1/search.php?key=6c55696f22f2c1&q=${city}&format=json`, true);
+    latlonReq.send();
+
+    let dataValues;
+
+    findCountry = data =>{
+        let values;
+        for(let i = 0; i < data.length; i++){
+            if(data[i].name == country){
+                values = data[i];
+                break;
+            }
+        }
+        if(typeof values != "undefined"){
+            dataValues = values;
+            document.getElementById("currencyCode").value = values.currencies[0].code;
+            let langs = values.languages;
+            let langList = "";
+            for(let i = 0; i < langs.length; i++){
+                langList+=langs[i].name;
+                if(i < langs.length-1)langList+=", ";
+            }
+            document.getElementById("languageList").value = langList;
+        }else addErrorText("ERROR: Cant find country values");
+    }
+
+    findLatLon = data =>{
+        let countryToLookFor = changeCountryName(country);
+        let values;
+        for(let i = 0; i < data.length; i++){
+            if(data[i].display_name.toLowerCase().includes(countryToLookFor.toLowerCase())){
+                values = data[i];
+                break;
+            }
+        }
+        if(typeof values != "undefined"){
+            console.log(values);
+            document.getElementById("lat").value = values.lat;
+            document.getElementById("lon").value = values.lon;
+        }else addErrorText("ERROR: Cant find city LatLon");
+    }
+
+    changeCountryName = name =>{
+        if(name == "United States of America")return "USA";
+        if(name == "United Kingdom of Great Britain and Northern Ireland")return "United Kingdom";
+        return name;
+    }
+
+    addErrorText = error =>{
+        let errorText = errorEle.textContent;
+        if(errorText.length != 0){
+            errorText += " || ";
+        }
+        errorText+= error;
+        errorEle.textContent = errorText;
+    }
+</script>

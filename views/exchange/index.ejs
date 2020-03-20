@@ -1,0 +1,68 @@
+<h1>Exchange Rates</h1>
+<div id="mainContainer">
+    <div class="flex-row">
+        <div class="flex-column choice">
+            <h3>Amount</h3>
+            <input type="number" min=1 value=1 id="amountValue">
+        </div>
+        <div class="flex-column choice">
+            <h3>Base Currency</h3>
+            <select id="currSelect">
+                <% currencies.forEach(item=>{%>
+                    <option value="<%= item %>"><%= item %></option>
+                <%})%>
+            </select>
+        </div>
+    </div>
+    <h4>Choose a city's currency to compare against</h4>
+    <%- include("../partials/citySelect") %>
+    <h2 class="infoString">Choose a City</h2>
+</div>
+
+<script>
+    let citySelect = document.getElementById("citySelect");
+    citySelect.addEventListener("change", ()=>getInfo());
+    let currSelect = document.getElementById("currSelect");
+    currSelect.addEventListener("change", ()=>getInfo());
+    let amountValue = document.getElementById("amountValue");
+    amountValue.addEventListener("change", ()=>changeInfo());
+    let infoString = document.getElementsByClassName("infoString")[0];
+    getInfo = () =>{
+        let req = new XMLHttpRequest();
+        req.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                createInfoString(JSON.parse(req.responseText));   
+            }else if(this.readyState == 4)addErrorText(`ERROR: Cant find languages: ${this.status}`);
+        };
+        req.open("GET", `/exchange/${JSON.stringify({id:citySelect.value, base:currSelect.value})}`, true);
+        req.send();
+    }
+
+    let decPlaces = 4;
+    let rate;
+    let base;
+    let currencyCode;
+    createInfoString = data =>{
+        rate = data.rate;
+        base = data.base;
+        currencyCode = data.currencyCode
+        let text = `1 ${base} : ${getRateString(rate)} ${currencyCode}`;
+        infoString.textContent = text;
+    }
+
+    let changeInfo = () =>{
+        let amount = amountValue.value;
+        let text = `${amount} ${base} : ${getRateString(rate*amount)} ${currencyCode}`;
+        infoString.textContent = text;
+    }
+
+    getRateString = amount =>{
+        let rateString = ""+amount;
+        let deciPlace = rateString.indexOf(".");
+        let end = (deciPlace+decPlaces < rateString.length? deciPlace+decPlaces:rateString.length);
+        return rateString.substring(0,end);
+    }
+
+    getInfo();
+
+</script>

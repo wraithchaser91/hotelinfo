@@ -3,7 +3,7 @@ const router = express.Router();
 const {errorLog} = require("../utils.js");
 
 router.get("/", (req, res)=>{
-    res.render("index");
+    res.render("api");
 });
 
 module.exports = router;
