@@ -13,6 +13,7 @@ router.get("/", async(req, res)=>{
         if(rates){
             for(let i = 0; i < rates.rates.length; i++){
                 currencies.push(rates.rates[i].split(":")[0]);
+                console.log(rates.rates[i].split(":")[0]);
             }
             cities = await City.find({});
             res.render("exchange", {currencies,cities});

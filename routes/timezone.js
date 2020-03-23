@@ -30,7 +30,13 @@ router.get("/:id", async(req,res)=>{
 
 findTime = time =>{
     let date = new Date();
-    return date.setHours(date.getHours()+time);
+    if(time%1 == 0){
+        return date.setHours(date.getHours()+time);
+    }else{
+        date.setHours(date.getHours()+(~~time));
+        date.setMinutes(date.getMinutes()+30);
+        return date;
+    }
 }
 
 module.exports = router;
