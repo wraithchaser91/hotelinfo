@@ -165,3 +165,11 @@ form input, form select{
 .apiString:hover{
     color:var(--secondaryColour);
 }
+
+#currentModels{
+    margin-top:3vh;
+}
+
+#modelRow{
+    margin-top:2vh;
+}

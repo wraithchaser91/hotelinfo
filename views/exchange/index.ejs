@@ -32,9 +32,9 @@
         req.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
                 createInfoString(JSON.parse(req.responseText));   
-            }else if(this.readyState == 4)addErrorText(`ERROR: Cant find languages: ${this.status}`);
+            }else if(this.readyState == 4)addErrorText(`ERROR: Cant find Exchange: ${this.status}`);
         };
-        req.open("GET", `/exchange/${JSON.stringify({id:citySelect.value, base:currSelect.value})}`, true);
+        req.open("GET", `api/exchange/${JSON.stringify({id:citySelect.value, base:currSelect.value})}`, true);
         req.send();
     }
 
@@ -46,7 +46,8 @@
         rate = data.rate;
         base = data.base;
         currencyCode = data.currencyCode
-        let text = `1 ${base} : ${getRateString(rate)} ${currencyCode}`;
+        let amount = amountValue.value;
+        let text = `${amount} ${base} : ${getRateString(rate)*amount} ${currencyCode}`;
         infoString.textContent = text;
     }
 

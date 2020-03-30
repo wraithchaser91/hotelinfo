@@ -13,10 +13,12 @@
         let req = new XMLHttpRequest();
         req.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
-                infoString.textContent = JSON.parse(req.responseText);          
+                let data = JSON.parse(req.responseText); 
+                console.log(data);  
+                infoString.textContent = data.weather;
             }else if(this.readyState == 4)addErrorText(`ERROR: Cant find the weather: ${this.status}`);
         };
-        req.open("GET", `/weather/${citySelect.value}`, true);
+        req.open("GET", `/api/weather/${citySelect.value}`, true);
         req.send();
     }
 
