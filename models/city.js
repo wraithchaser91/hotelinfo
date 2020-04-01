@@ -14,10 +14,6 @@ const citySchema = new mongoose.Schema({
         default: undefined,
         required: true
     },
-    timeZone:{
-        type: Number,
-        required: true
-    },
     country:{
         type: String,
         required: true
@@ -32,6 +28,10 @@ const citySchema = new mongoose.Schema({
     },
     weather:{
         type: String,
+        required: true
+    },
+    temp:{
+        type:Number,
         required: true
     },
     lastUpdated:{

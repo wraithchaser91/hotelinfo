@@ -26,7 +26,6 @@ router.post("/save-city", async(req, res)=>{
         country: req.body.country,
         currencyCode: req.body.currencyCode,
         languages: createList(req.body.languageList),
-        timeZone: req.body.timeZone,
         lat: req.body.lat,
         lon: req.body.lon
     });
@@ -54,7 +53,6 @@ router.post("/update/:id", async(req,res)=>{
         city.country = req.body.country,
         city.currencyCode = req.body.currencyCode,
         city.languages = createList(req.body.languageList),
-        city.timeZone = req.body.timeZone,
         city.lat = req.body.lat,
         city.lon = req.body.lon,
         await city.save();

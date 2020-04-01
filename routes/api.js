@@ -87,7 +87,6 @@ router.get("/exchange/:obj", async(req,res)=>{
 });
 
 router.get("/weather/:id", async(req,res) =>{
-    console.log("call");
     try{
         let city = await City.findById(req.params.id);
         if(getWeatherLastUpdated(city.lastUpdated)){
@@ -110,6 +109,7 @@ updateCity = (city,res) =>{
         if(this.readyState == 4 && this.status == 200){
             let data =  JSON.parse(weatherReq.responseText);
             city.weather = data.weather[0].main;
+            city.temp = getTemp(data.main.temp);
             city.lastUpdated = new Date();
             try{
                 await city.save();
@@ -157,6 +157,7 @@ getWeather = (city,res) =>{
         if(this.readyState == 4 && this.status == 200){
             let data =  JSON.parse(weatherReq.responseText);
             city.weather = data.weather[0].main;
+            city.temp = getTemp(data.main.temp);
             try{
                 await city.save();
             }catch(e){
@@ -169,21 +170,6 @@ getWeather = (city,res) =>{
     weatherReq.send();
 }
 
-updateWeather = (id) =>{
-    console.log(id);
-    let weatherReq = new XMLHttpRequest();
-    weatherReq.onreadystatechange = async function(){
-        if(this.readyState == 4 && this.status == 200){
-            let data =  JSON.parse(weatherReq.responseText);
-            console.log(data);
-        }else{
-            console.log(this.readyState, this.status)
-        }
-    };
-    weatherReq.open("GET", `/routes/weather/${id}`, true);
-    weatherReq.send();
-}
-
 getRatesLastUpdated = time =>{
     let date = new Date();
     return (date.getYear() == time.getYear() && date.getMonth() == time.getMonth() && date.getDate() == time.getDate() && date.getHours() == time.getHours());
@@ -193,5 +179,184 @@ getWeatherLastUpdated = time =>{
     let date = new Date();
     return (date.getYear() == time.getYear() && date.getMonth() == time.getMonth() && date.getDate() == time.getDate());
 }
+
+getTemp = init =>{
+    let temp = init - 273.15;
+    temp = parseFloat(temp.toFixed(2));
+    return temp;
+}
+
+let italy = [
+"Rome",
+"Milan",
+"Naples",
+"Turin",
+"Palermo",
+"Genoa",
+"Bologna",
+"Florence",
+"Bari",
+"Catania",
+"Venice",
+"Verona",
+"Messina",
+"Padua",
+"Trieste",
+"Brescia",
+"Taranto",
+"Parma",
+"Prato",
+"Modena",
+"Reggio Calabria",
+"Reggio Emilia",
+"Perugia",
+"Livorno",
+"Ravenna",
+"Cagliari",
+"Foggia",
+"Rimini",
+"Salerno",
+"Ferrara",
+"Sassari",
+"Latina",
+"Giugliano in Campania",
+"Monza",
+"Syracuse",
+"Bergamo",
+"Pescara",
+"Trento",
+"Forlì",
+"Vicenza",
+"Terni",
+"Bolzano",
+"Novara",
+"Piacenza",
+"Ancona",
+"Andria",
+"Udine",
+"Arezzo",
+"Cesena",
+"Lecce",
+"Pesaro",
+"Barletta",
+"Alessandria",
+"La Spezia",
+"Pistoia",
+"Pisa",
+"Catanzaro",
+"Guidonia Montecelio",
+"Lucca",
+"Brindisi",
+"Torre del Greco",
+"Treviso",
+"Busto Arsizio",
+"Como",
+"Marsala",
+"Grosseto",
+"Sesto San Giovanni",
+"Pozzuoli",
+"Varese",
+"Fiumicino",
+"Casoria",
+"Asti",
+"Cinisello Balsamo",
+"Caserta",
+"Gela",
+"Aprilia",
+"Ragusa",
+"Pavia",
+"Cremona",
+"Carpi",
+"Quartu SantElena",
+"Lamezia Terme",
+"Altamura",
+"Imola",
+"LAquila",
+"Massa",
+"Trapani",
+"Viterbo",
+"Cosenza",
+"Potenza",
+"Castellammare di Stabia",
+"Afragola",
+"Vittoria",
+"Crotone",
+"Pomezia",
+"Vigevano",
+"Carrara",
+"Caltanissetta",
+"Viareggio",
+"Fano",
+"Savona",
+"Matera",
+"Olbia",
+"Legnano",
+"Acerra",
+"Marano di Napoli",
+"Benevento",
+"Molfetta",
+"Agrigento",
+"Faenza",
+"Cerignola",
+"Moncalieri",
+"Foligno",
+"Manfredonia",
+"Tivoli",
+"Cuneo",
+"Trani",
+"Bisceglie",
+"Bitonto",
+"Bagheria",
+"Anzio",
+"Portici",
+"Modica",
+"Sanremo",
+"Avellino",
+"Teramo",
+"Montesilvano",
+"Siena",
+"Gallarate",
+"Velletri",
+"Cava de Tirreni",
+"San Severo",
+"Aversa",
+"Ercolano",
+"Civitavecchia",
+"Acireale",
+"Mazara del Vallo",
+"Rovigo",
+"Pordenone",
+"Battipaglia",
+"Rho",
+"Chieti",
+"Scafati",
+"Scandicci"
+]
+
+findItalyWeather = index =>{
+    if(index == italy.length){
+        console.log("end");
+        return;
+    }
+    let weatherReq = new XMLHttpRequest();
+    weatherReq.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            let data =  JSON.parse(weatherReq.responseText);
+            let weather = data.weather[0].main.toLowerCase().replace(/ /g, "");
+            console.log(italy[index], weather);
+            if(weather != "thunderstorm"){
+                index++;
+                findItalyWeather(index);
+            }
+        }else if(this.readyState == 4){
+            index++;
+            findItalyWeather(index);
+        }
+    };
+    weatherReq.open("GET", `https://api.openweathermap.org/data/2.5/weather?q=${italy[index]}&appid=2eb78cd83e92a1a54b19f1940b9b1821`, true);
+    weatherReq.send();
+}
+
+// findItalyWeather(0);
 
 module.exports = router;
