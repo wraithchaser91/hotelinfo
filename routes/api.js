@@ -182,7 +182,7 @@ getWeatherLastUpdated = time =>{
 
 getTemp = init =>{
     let temp = init - 273.15;
-    temp = parseFloat(temp.toFixed(2));
+    temp = parseFloat(temp.toFixed(1));
     return temp;
 }
 
